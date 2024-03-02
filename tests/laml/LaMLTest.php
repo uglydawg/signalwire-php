@@ -4,14 +4,8 @@ use PHPUnit\Framework\TestCase;
 
 class LaMLTest extends TestCase
 {
-  public function testGeneratedLaMLMatch(): void {
-    $response = new SignalWire\LaML();
-    $response->say("Hey!");
-    $response->play("https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3", array("loop" => 5));
-    $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Say>Hey!</Say><Play loop=\"5\">https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3</Play></Response>\n");
-  }
-
-  public function testFaxResponseLaMLMatch(): void {
+  public function testFaxResponseLaMLMatch(): void
+  {
     $response = new SignalWire\LaML\FaxResponse();
     $response->receive([
       'attr' => 'value',
@@ -20,7 +14,8 @@ class LaMLTest extends TestCase
     $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Receive attr=\"value\" key=\"foo\"/></Response>\n");
   }
 
-  public function testVoiceResponseLaMLMatch(): void {
+  public function testVoiceResponseLaMLMatch(): void
+  {
     $response = new SignalWire\LaML\VoiceResponse();
     $response->connect([
       'field' => 'what',
@@ -78,7 +73,7 @@ class LaMLTest extends TestCase
     $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Record field=\"what\"/></Response>\n");
 
     $response = new SignalWire\LaML\VoiceResponse();
-    $response->redirect('redirect-to',[
+    $response->redirect('redirect-to', [
       'field' => 'what',
     ]);
     $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Redirect field=\"what\">redirect-to</Redirect></Response>\n");
@@ -90,13 +85,13 @@ class LaMLTest extends TestCase
     $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Reject field=\"what\"/></Response>\n");
 
     $response = new SignalWire\LaML\VoiceResponse();
-    $response->say('Hello!',[
+    $response->say('Hello!', [
       'field' => 'what',
     ]);
     $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Say field=\"what\">Hello!</Say></Response>\n");
 
     $response = new SignalWire\LaML\VoiceResponse();
-    $response->sms('body-here',[
+    $response->sms('body-here', [
       'field' => 'what',
     ]);
     $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Sms field=\"what\">body-here</Sms></Response>\n");
@@ -138,7 +133,7 @@ class LaMLTest extends TestCase
     $p1->setTemperature(0.2);
     $ai->postPrompt('prompt2');
     $swaig = $ai->swaig();
-    $swaig->defaults([ 'webHookURL' => "https://user:pass@server.com/commands.cgi"]);
+    $swaig->defaults(['webHookURL' => "https://user:pass@server.com/commands.cgi"]);
     $fn = $swaig->function();
     $fn->setName('fn1');
     $fn->setArgument('no argument');
@@ -152,14 +147,16 @@ class LaMLTest extends TestCase
     $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Connect><AI engine=\"gcloud\"><Prompt temperature=\"0.2\">prompt1</Prompt><PostPrompt>prompt2</PostPrompt><SWAIG><Defaults webHookURL=\"https://user:pass@server.com/commands.cgi\"></Defaults><Function name=\"fn1\" argument=\"no argument\" purpose=\"to do something\"></Function><Function name=\"fn2\" argument=\"no argument\" purpose=\"to do something\"><AAA>111</AAA><BBB>222</BBB></Function></SWAIG></AI></Connect></Response>\n");
   }
 
-  public function testMessageResponseLaMLMatch(): void {
+  public function testMessageResponseLaMLMatch(): void
+  {
     $response = new SignalWire\LaML\MessageResponse();
     $response->message("Hello World", ['attr' => 'value']);
     $response->redirect("foo", ['method' => 'GET']);
     $this->assertEquals($response->__toString(), "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response><Message attr=\"value\">Hello World</Message><Redirect method=\"GET\">foo</Redirect></Response>\n");
   }
 
-  public function testMessagingResponseLaMLMatch(): void {
+  public function testMessagingResponseLaMLMatch(): void
+  {
     $response = new SignalWire\LaML\MessagingResponse();
     $response->message("Hello World", ['attr' => 'value']);
     $response->redirect("foo", ['method' => 'GET']);

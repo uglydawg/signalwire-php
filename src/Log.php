@@ -1,11 +1,14 @@
 <?php
 namespace SignalWire;
+
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 
-class Log {
-  protected static $instance;
+class Log
+{
+	protected static $instance;
 
 	/**
 	 * Method to return the Monolog instance
@@ -14,14 +17,14 @@ class Log {
 	 */
 	static public function getLogger()
 	{
-		if (! self::$instance) {
+		if (!self::$instance) {
 			self::configureInstance();
 		}
 
 		return self::$instance;
-  }
+	}
 
-  /**
+	/**
 	 * Configure Monolog.
 	 *
 	 * @return Logger
@@ -31,7 +34,7 @@ class Log {
 		$output = "[%datetime%] %channel%.%level_name%: %message% \n";
 		$formatter = new LineFormatter($output);
 
-		$level = isset($_ENV['DEBUG']) ? Logger::DEBUG : Logger::INFO;
+		$level = isset($_ENV['DEBUG']) ? Level::Debug : Level::Info;
 		$streamHandler = new StreamHandler('php://stdout', $level);
 		$streamHandler->setFormatter($formatter);
 
@@ -40,23 +43,28 @@ class Log {
 		self::$instance = $logger;
 	}
 
-	public static function debug($message, array $context = []){
+	public static function debug($message, array $context = [])
+	{
 		self::getLogger()->debug($message, $context);
 	}
 
-	public static function info($message, array $context = []){
+	public static function info($message, array $context = [])
+	{
 		self::getLogger()->info($message, $context);
 	}
 
-	public static function notice($message, array $context = []){
+	public static function notice($message, array $context = [])
+	{
 		self::getLogger()->notice($message, $context);
 	}
 
-	public static function warning($message, array $context = []){
+	public static function warning($message, array $context = [])
+	{
 		self::getLogger()->warning($message, $context);
 	}
 
-	public static function error($message, array $context = []){
+	public static function error($message, array $context = [])
+	{
 		self::getLogger()->error($message, $context);
 	}
 
